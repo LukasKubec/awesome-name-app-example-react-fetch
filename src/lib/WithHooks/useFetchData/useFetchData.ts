@@ -11,14 +11,16 @@ interface UseFetchData<RS, E> {
     invalidDate: () => void;
 }
 
-interface UseFetchDataProps {
+interface UseFetchDataProps<RS, E> {
     url?: string;
+    genericResponseTypeGuard: (response: RS | unknown) => response is RS;
+    genericErrorType: E;
 }
 
 const DEFAULT_URL = "https://api.agify.io";
 
 // TODO: add type guards / type predicates
-export const useFetchData = <RS, E>({ url = DEFAULT_URL }: UseFetchDataProps): UseFetchData<RS, E> => {
+export const useFetchData = <RS, E>({ url = DEFAULT_URL, genericResponseTypeGuard, genericErrorType }: UseFetchDataProps<RS, E>): UseFetchData<RS, E> => {
     const [response, setResponse] = useState<ApiState<RS, E>>(INITIAL_STATE);
     const [data, setData] = useState<NameRequest | undefined>(undefined);
 
@@ -46,12 +48,21 @@ export const useFetchData = <RS, E>({ url = DEFAULT_URL }: UseFetchDataProps): U
                         method: "GET",
                         params: data
                     });
-                    setResponse({
-                        loading: false,
-                        success: true,
-                        error: undefined,
-                        data: response.data
-                    });
+                    if(genericResponseTypeGuard(response.data)) {
+                        setResponse({
+                            loading: false,
+                            success: true,
+                            error: undefined,
+                            data: response.data
+                        });
+                    } else {
+                        setResponse({
+                            loading: false,
+                            success: false,
+                            error: genericErrorType,
+                            data: undefined
+                        });
+                    }
                 } catch (error) {
                     if (axios.isAxiosError(error)) {
                         setResponse({

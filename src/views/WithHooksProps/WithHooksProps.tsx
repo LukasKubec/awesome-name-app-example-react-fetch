@@ -10,7 +10,14 @@ export const WithHooksProps = (): JSX.Element => {
     const { loading, data, handleSetData, success, error, invalidDate } = useFetchData<
         NameResponse,
         NameError
-    >({});
+    >({
+        genericResponseTypeGuard: (response: NameResponse | unknown): response is NameResponse => {
+            return (response as NameResponse).age !== undefined;
+        },
+        genericErrorType: {
+            error: "Incorrect response type",
+        }
+    });
 
     return (
         <>
