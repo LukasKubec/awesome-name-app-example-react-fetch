@@ -10,7 +10,7 @@ type Method<RQ> = {
 export interface FetchParams<RQ, E> {
     url: string;
     method: Method<RQ>;
-    genericTypeError: E;
+    genericTypeError?: E;
 }
 
 interface UseAxios<RQ, RS, E> {
@@ -48,12 +48,16 @@ export const useAxios = <RQ, RS, E>(genericResponseTypeGuard: (response: RS | un
                     data: response.data
                 });
             } else {
-                setResponse({
-                    loading: false,
-                    success: false,
-                    error: genericTypeError,
-                    data: undefined
-                });
+                if (genericTypeError) {
+                    setResponse({
+                        loading: false,
+                        success: false,
+                        error: genericTypeError,
+                        data: undefined
+                    });
+                } else {
+                    console.error("Response type is incorrect");
+                }
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {

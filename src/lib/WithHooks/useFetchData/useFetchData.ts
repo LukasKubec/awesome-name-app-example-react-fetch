@@ -14,12 +14,16 @@ interface UseFetchData<RS, E> {
 interface UseFetchDataProps<RS, E> {
     url?: string;
     genericResponseTypeGuard: (response: RS | unknown) => response is RS;
-    genericTypeError: E;
+    genericTypeError?: E;
 }
 
 const DEFAULT_URL = "https://api.agify.io";
 
-export const useFetchData = <RS, E>({ url = DEFAULT_URL, genericResponseTypeGuard, genericTypeError }: UseFetchDataProps<RS, E>): UseFetchData<RS, E> => {
+export const useFetchData = <RS, E>({
+    url = DEFAULT_URL,
+    genericResponseTypeGuard,
+    genericTypeError
+}: UseFetchDataProps<RS, E>): UseFetchData<RS, E> => {
     const [response, setResponse] = useState<ApiState<RS, E>>(INITIAL_STATE);
     const [data, setData] = useState<NameRequest | undefined>(undefined);
 
@@ -47,7 +51,7 @@ export const useFetchData = <RS, E>({ url = DEFAULT_URL, genericResponseTypeGuar
                         method: "GET",
                         params: data
                     });
-                    if(genericResponseTypeGuard(response.data)) {
+                    if (genericResponseTypeGuard(response.data)) {
                         setResponse({
                             loading: false,
                             success: true,
@@ -55,12 +59,16 @@ export const useFetchData = <RS, E>({ url = DEFAULT_URL, genericResponseTypeGuar
                             data: response.data
                         });
                     } else {
-                        setResponse({
-                            loading: false,
-                            success: false,
-                            error: genericTypeError,
-                            data: undefined
-                        });
+                        if (genericTypeError) {
+                            setResponse({
+                                loading: false,
+                                success: false,
+                                error: genericTypeError,
+                                data: undefined
+                            });
+                        } else {
+                            console.error("Response type is incorrect");
+                        }
                     }
                 } catch (error) {
                     if (axios.isAxiosError(error)) {
