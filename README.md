@@ -32,9 +32,6 @@ Check out:
 * Custom hook with api call:
     * [src/lib/WithHooks/useFetchData/useFetchNameData.ts](src/lib/WithHooks/useFetchData/useFetchData.ts)
 
-### ... need to be done
-* Type checking for API response e.g. by type guards / predicates
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

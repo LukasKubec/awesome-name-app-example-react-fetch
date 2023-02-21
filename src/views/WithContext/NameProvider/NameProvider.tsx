@@ -27,6 +27,12 @@ export const NameProvider = ({ children }: NameProviderProps): JSX.Element => {
                 method: {
                     data,
                     method: "GET"
+                },
+                genericResponseTypeGuard: (response: NameResponse | unknown): response is NameResponse => {
+                    return (response as NameResponse).age !== undefined;
+                },
+                genericTypeError: {
+                    error: "Incorrect response type",
                 }
             }))();
         }

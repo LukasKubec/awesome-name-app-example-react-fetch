@@ -7,18 +7,19 @@ type Method<RQ> = {
     data?: RQ;
 };
 
-export interface FetchParams<RQ> {
+export interface FetchParams<RQ, RS, E> {
     url: string;
     method: Method<RQ>;
+    genericResponseTypeGuard: (response: RS | unknown) => response is RS;
+    genericTypeError: E;
 }
 
 interface UseAxios<RS, E> {
     apiState: ApiState<RS, E>;
-    fetchData: <RQ>(data: FetchParams<RQ>) => Promise<void>;
+    fetchData: <RQ>(data: FetchParams<RQ, RS, E>) => Promise<void>;
     invalidateState: () => void;
 }
 
-// TODO: add type guards / type predicates
 export const useAxios = <RS, E>(): UseAxios<RS, E> => {
     const [response, setResponse] = useState<ApiState<RS, E>>(INITIAL_STATE);
 
@@ -26,7 +27,7 @@ export const useAxios = <RS, E>(): UseAxios<RS, E> => {
         setResponse(INITIAL_STATE);
     }
 
-    const fetchData = async <RQ>({ url, method }: FetchParams<RQ>) => {
+    const fetchData = async <RQ>({ url, method, genericResponseTypeGuard, genericTypeError }: FetchParams<RQ, RS, E>) => {
         try {
             setResponse({
                 loading: true,
@@ -40,12 +41,21 @@ export const useAxios = <RS, E>(): UseAxios<RS, E> => {
                 data: method.method === "POST" ? method.data : undefined,
                 params: method.method === "GET" ? method.data : undefined
             });
-            setResponse({
-                loading: false,
-                success: true,
-                error: undefined,
-                data: response.data
-            });
+            if(genericResponseTypeGuard(response.data)) {
+                setResponse({
+                    loading: false,
+                    success: true,
+                    error: undefined,
+                    data: response.data
+                });
+            } else {
+                setResponse({
+                    loading: false,
+                    success: false,
+                    error: genericTypeError,
+                    data: undefined
+                });
+            }
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 setResponse({
