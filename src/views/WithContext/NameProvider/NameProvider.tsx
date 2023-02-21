@@ -10,7 +10,12 @@ const NameContextProvider = nameContext.Provider;
 
 export const NameProvider = ({ children }: NameProviderProps): JSX.Element => {
     const [data, setData] = useState<NameRequest | undefined>(undefined);
-    const { fetchData, apiState, invalidateState } = useAxios<NameResponse, NameError>();
+    const { fetchData, apiState, invalidateState } = useAxios<NameRequest, NameResponse, NameError>(
+        (response: NameResponse | unknown): response is NameResponse => {
+            return (response as NameResponse).age !== undefined;
+        }
+    );
+
     const handleRequestData = (data: NameRequest): void => {
         setData(data);
     };
@@ -18,23 +23,21 @@ export const NameProvider = ({ children }: NameProviderProps): JSX.Element => {
     const invalidate = () => {
         setData(undefined);
         invalidateState();
-    }
+    };
 
     useEffect(() => {
         if (data) {
-            (async() => await fetchData({
-                url: "https://api.agify.io",
-                method: {
-                    data,
-                    method: "GET"
-                },
-                genericResponseTypeGuard: (response: NameResponse | unknown): response is NameResponse => {
-                    return (response as NameResponse).age !== undefined;
-                },
-                genericTypeError: {
-                    error: "Incorrect response type",
-                }
-            }))();
+            (async () =>
+                await fetchData({
+                    url: "https://api.agify.io",
+                    method: {
+                        data,
+                        method: "GET"
+                    },
+                    genericTypeError: {
+                        error: "Incorrect response type"
+                    }
+                }))();
         }
     }, [data]);
 

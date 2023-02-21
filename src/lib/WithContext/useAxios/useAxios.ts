@@ -7,27 +7,26 @@ type Method<RQ> = {
     data?: RQ;
 };
 
-export interface FetchParams<RQ, RS, E> {
+export interface FetchParams<RQ, E> {
     url: string;
     method: Method<RQ>;
-    genericResponseTypeGuard: (response: RS | unknown) => response is RS;
     genericTypeError: E;
 }
 
-interface UseAxios<RS, E> {
+interface UseAxios<RQ, RS, E> {
     apiState: ApiState<RS, E>;
-    fetchData: <RQ>(data: FetchParams<RQ, RS, E>) => Promise<void>;
+    fetchData: (data: FetchParams<RQ, E>) => Promise<void>;
     invalidateState: () => void;
 }
 
-export const useAxios = <RS, E>(): UseAxios<RS, E> => {
+export const useAxios = <RQ, RS, E>(genericResponseTypeGuard: (response: RS | unknown) => response is RS): UseAxios<RQ, RS, E> => {
     const [response, setResponse] = useState<ApiState<RS, E>>(INITIAL_STATE);
 
     const invalidateState = () => {
         setResponse(INITIAL_STATE);
     }
 
-    const fetchData = async <RQ>({ url, method, genericResponseTypeGuard, genericTypeError }: FetchParams<RQ, RS, E>) => {
+    const fetchData = async ({ url, method, genericTypeError }: FetchParams<RQ, E>) => {
         try {
             setResponse({
                 loading: true,
