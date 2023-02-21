@@ -1,4 +1,4 @@
-import { useFetchNameData } from "../../lib";
+import { useFetchData } from "../../lib";
 import { NameError, NameResponse } from "../../types";
 import { Box, Grid } from "@mui/material";
 import { Header } from "../../sharedComponents";
@@ -7,10 +7,10 @@ import { NumberView } from "./NumberView";
 import { AgeView } from "./AgeView";
 
 export const WithHooksProps = (): JSX.Element => {
-    const { loading, data, handleSetData, success, error, invalidDate } = useFetchNameData<
+    const { loading, data, handleSetData, success, error, invalidDate } = useFetchData<
         NameResponse,
         NameError
-    >();
+    >({});
 
     return (
         <>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ApiState, INITIAL_STATE, NameRequest } from "../../../types";
 import axios from "axios";
 
-interface UseFetchNameData<RS, E> {
+interface UseFetchData<RS, E> {
     loading: boolean;
     success: boolean;
     error?: E;
@@ -11,9 +11,14 @@ interface UseFetchNameData<RS, E> {
     invalidDate: () => void;
 }
 
-const url = "https://api.agify.io";
+interface UseFetchDataProps {
+    url?: string;
+}
 
-export const useFetchNameData = <RS, E>(): UseFetchNameData<RS, E> => {
+const DEFAULT_URL = "https://api.agify.io";
+
+// TODO: add type guards / type predicates
+export const useFetchData = <RS, E>({ url = DEFAULT_URL }: UseFetchDataProps): UseFetchData<RS, E> => {
     const [response, setResponse] = useState<ApiState<RS, E>>(INITIAL_STATE);
     const [data, setData] = useState<NameRequest | undefined>(undefined);
 

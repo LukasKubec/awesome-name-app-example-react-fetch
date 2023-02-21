@@ -18,6 +18,7 @@ interface UseAxios<RS, E> {
     invalidateState: () => void;
 }
 
+// TODO: add type guards / type predicates
 export const useAxios = <RS, E>(): UseAxios<RS, E> => {
     const [response, setResponse] = useState<ApiState<RS, E>>(INITIAL_STATE);
 

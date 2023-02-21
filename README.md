@@ -30,7 +30,7 @@ Check out:
 * Components in view with hook calls:
     * [src/views/WithHooksProps/WithHooksProps.tsx](src/views/WithHooksProps/WithHooksProps.tsx)
 * Custom hook with api call:
-    * [src/lib/WithHooks/useFetchNameData/useFetchNameData.ts](src/lib/WithHooks/useFetchNameData/useFetchNameData.ts)
+    * [src/lib/WithHooks/useFetchData/useFetchNameData.ts](src/lib/WithHooks/useFetchData/useFetchData.ts)
 
 ### ... need to be done
 * Type checking for API response e.g. by type guards / predicates
