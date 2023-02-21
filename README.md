@@ -1,5 +1,9 @@
 # Awesome Name App
-Simple example how to handle fetching data from API and display it in React app with Axios and Typescript
+Simple example how to handle fetching data from API and display it in React app with Axios and Typescript:
+* by using React Context
+* or by using customHooks with prop drilling
+* typesafe with Typescript with type check both on response and response error
+* with setting types only at fetch call with inheriting types to all components that use those data
 
 ## How to run this app
 1. Clone this repo
