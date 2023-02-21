@@ -91,7 +91,7 @@ export const useFetchData = <RS, E>({
         }
         return () => {
             setResponse(INITIAL_STATE);
-        }
+        };
     }, [data]);
 
     return {

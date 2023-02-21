@@ -48,7 +48,7 @@ export const NameProvider = ({ children }: NameProviderProps): JSX.Element => {
         }
         return () => {
             setData(undefined);
-        }
+        };
     }, [data]);
 
     return (

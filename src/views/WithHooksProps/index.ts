@@ -1,1 +1,1 @@
-export * from "./WithHooksProps"
+export * from "./WithHooksProps";

@@ -9,9 +9,5 @@ interface HeaderProps {
 const DEFAULT_TITLE = "Awesome name app!";
 
 export const Header = ({ title = DEFAULT_TITLE, variant = "h1" }: HeaderProps): JSX.Element => {
-    return (
-        <Typography variant={variant}>
-            {title}
-        </Typography>
-    );
+    return <Typography variant={variant}>{title}</Typography>;
 };
