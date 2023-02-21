@@ -12,8 +12,4 @@ interface NameError {
     error: string;
 }
 
-export type {
-    NameRequest,
-    NameResponse,
-    NameError,
-}
+export type { NameRequest, NameResponse, NameError };

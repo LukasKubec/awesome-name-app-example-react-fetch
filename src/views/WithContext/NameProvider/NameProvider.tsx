@@ -11,8 +11,15 @@ const NameContextProvider = nameContext.Provider;
 export const NameProvider = ({ children }: NameProviderProps): JSX.Element => {
     const [data, setData] = useState<NameRequest | undefined>(undefined);
     const { fetchData, apiState, invalidateState } = useAxios<NameRequest, NameResponse, NameError>(
-        (response: NameResponse | unknown): response is NameResponse => {
-            return (response as NameResponse).age !== undefined;
+        {
+            genericResponseTypeGuard: (
+                response: NameResponse | unknown
+            ): response is NameResponse => {
+                return (response as NameResponse).age !== undefined;
+            },
+            genericErrorTypeGuard: (error: NameError | unknown | undefined): error is NameError => {
+                return (error as NameError).error !== undefined;
+            }
         }
     );
 

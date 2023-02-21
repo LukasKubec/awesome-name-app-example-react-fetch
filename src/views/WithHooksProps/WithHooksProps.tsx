@@ -16,6 +16,9 @@ export const WithHooksProps = (): JSX.Element => {
         },
         genericTypeError: {
             error: "Incorrect response type",
+        },
+        genericErrorTypeGuard: (response: NameError | unknown | undefined): response is NameError => {
+            return (response as NameError).error !== undefined;
         }
     });
 

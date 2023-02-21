@@ -15,6 +15,7 @@ interface UseFetchDataProps<RS, E> {
     url?: string;
     genericResponseTypeGuard: (response: RS | unknown) => response is RS;
     genericTypeError?: E;
+    genericErrorTypeGuard: (error: E | unknown | undefined) => error is E;
 }
 
 const DEFAULT_URL = "https://api.agify.io";
@@ -22,7 +23,8 @@ const DEFAULT_URL = "https://api.agify.io";
 export const useFetchData = <RS, E>({
     url = DEFAULT_URL,
     genericResponseTypeGuard,
-    genericTypeError
+    genericTypeError,
+    genericErrorTypeGuard
 }: UseFetchDataProps<RS, E>): UseFetchData<RS, E> => {
     const [response, setResponse] = useState<ApiState<RS, E>>(INITIAL_STATE);
     const [data, setData] = useState<NameRequest | undefined>(undefined);
@@ -72,12 +74,17 @@ export const useFetchData = <RS, E>({
                     }
                 } catch (error) {
                     if (axios.isAxiosError(error)) {
-                        setResponse({
-                            loading: false,
-                            success: false,
-                            error: error.response?.data,
-                            data: undefined
-                        });
+                        if (genericErrorTypeGuard(error.response?.data)) {
+                            setResponse({
+                                loading: false,
+                                success: false,
+                                error: error.response?.data,
+                                data: undefined
+                            });
+                        } else {
+                            console.error("Unknown error");
+                            console.error(error.response?.data);
+                        }
                     }
                 }
             })();

@@ -19,12 +19,20 @@ interface UseAxios<RQ, RS, E> {
     invalidateState: () => void;
 }
 
-export const useAxios = <RQ, RS, E>(genericResponseTypeGuard: (response: RS | unknown) => response is RS): UseAxios<RQ, RS, E> => {
+interface UseAxiosProps<RS, E> {
+    genericResponseTypeGuard: (response: RS | unknown) => response is RS;
+    genericErrorTypeGuard: (error: E | unknown | undefined) => error is E;
+}
+
+export const useAxios = <RQ, RS, E>({
+    genericResponseTypeGuard,
+    genericErrorTypeGuard
+}: UseAxiosProps<RS, E>): UseAxios<RQ, RS, E> => {
     const [response, setResponse] = useState<ApiState<RS, E>>(INITIAL_STATE);
 
     const invalidateState = () => {
         setResponse(INITIAL_STATE);
-    }
+    };
 
     const fetchData = async ({ url, method, genericTypeError }: FetchParams<RQ, E>) => {
         try {
@@ -40,7 +48,7 @@ export const useAxios = <RQ, RS, E>(genericResponseTypeGuard: (response: RS | un
                 data: method.method === "POST" ? method.data : undefined,
                 params: method.method === "GET" ? method.data : undefined
             });
-            if(genericResponseTypeGuard(response.data)) {
+            if (genericResponseTypeGuard(response.data)) {
                 setResponse({
                     loading: false,
                     success: true,
@@ -61,12 +69,17 @@ export const useAxios = <RQ, RS, E>(genericResponseTypeGuard: (response: RS | un
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                setResponse({
-                    loading: false,
-                    success: false,
-                    error: error.response?.data,
-                    data: undefined
-                });
+                if (genericErrorTypeGuard(error.response?.data)) {
+                    setResponse({
+                        loading: false,
+                        success: false,
+                        error: error.response?.data,
+                        data: undefined
+                    });
+                } else {
+                    console.error("Unknown error");
+                    console.error(error.response?.data);
+                }
             }
         }
     };
