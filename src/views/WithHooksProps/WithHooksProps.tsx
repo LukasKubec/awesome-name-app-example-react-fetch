@@ -1,5 +1,5 @@
 import { useFetchData } from "../../lib";
-import { NameError, NameResponse } from "../../types";
+import { NameError, NameErrorTypeGuard, NameResponse, nameResponseTypeGuard } from "../../types";
 import { Box, Grid } from "@mui/material";
 import { Header } from "../../sharedComponents";
 import { Form } from "./Form";
@@ -11,13 +11,8 @@ export const WithHooksProps = (): JSX.Element => {
         NameResponse,
         NameError
     >({
-        genericResponseTypeGuard: (response: NameResponse | unknown): response is NameResponse =>
-            (response as NameResponse).age !== undefined,
-        genericTypeError: {
-            error: "Incorrect response type"
-        },
-        genericErrorTypeGuard: (response: NameError | unknown | undefined): response is NameError =>
-            (response as NameError).error !== undefined
+        genericResponseTypeGuard: nameResponseTypeGuard,
+        genericErrorTypeGuard: NameErrorTypeGuard
     });
 
     return (

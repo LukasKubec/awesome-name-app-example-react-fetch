@@ -1,6 +1,12 @@
 import { ReactNode, useEffect, useState } from "react";
 import { nameContext, useAxios } from "../../../lib";
-import { NameError, NameRequest, NameResponse } from "../../../types";
+import {
+    NameError,
+    NameErrorTypeGuard,
+    NameRequest,
+    NameResponse,
+    nameResponseTypeGuard
+} from "../../../types";
 
 interface NameProviderProps {
     children: ReactNode;
@@ -12,11 +18,8 @@ export const NameProvider = ({ children }: NameProviderProps): JSX.Element => {
     const [data, setData] = useState<NameRequest | undefined>(undefined);
     const { fetchData, apiState, invalidateState } = useAxios<NameRequest, NameResponse, NameError>(
         {
-            genericResponseTypeGuard: (
-                response: NameResponse | unknown
-            ): response is NameResponse => (response as NameResponse).age !== undefined,
-            genericErrorTypeGuard: (error: NameError | unknown | undefined): error is NameError =>
-                (error as NameError).error !== undefined
+            genericResponseTypeGuard: nameResponseTypeGuard,
+            genericErrorTypeGuard: NameErrorTypeGuard
         }
     );
 
