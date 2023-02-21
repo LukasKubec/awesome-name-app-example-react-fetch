@@ -1,3 +1,40 @@
+# Awesome Name App
+Simple example how to handle fetching data from API and display it in React app with Axios and Typescript
+
+## How to run this app
+1. Clone this repo
+2. Run `npm install` to install all dependencies
+3. Run `npm start` to start the app
+4. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+## How to handle API calls in React app with Axios and Typescript
+
+### ... by using React Context
+
+Example of fetching data from API and displaying it in React app with Axios and Typescript by using React Context.
+
+Check out:
+
+* Components in view with hook calls:
+    * [src/views/WithContext/WithContextView.tsx](src/views/WithContext/WithContextView.tsx)
+* Provider with api call:
+    * [src/views/WithContext/NameProvider/NameProvider.tsx](src/views/WithContext/NameProvider/NameProvider.tsx)
+* Universal useAxios hook for fetching data:
+    * [src/lib/WithContext/useAxios/useAxios.ts](src/lib/WithContext/useAxios/useAxios.ts)
+
+### ... by using customHooks with prop drilling
+
+Example of fetching data from API and displaying it in React app with Axios and Typescript by using customHooks with prop drilling.
+
+Check out:
+* Components in view with hook calls:
+    * [src/views/WithHookProps/WithHooksProps.tsx](src/views/WithHookProps/WithHooksProps.tsx)
+* Custom hook with api call:
+    * [src/lib/WithHooks/useFetchNameData/useFetchNameData.ts](src/lib/WithHooks/useFetchNameData/useFetchNameData.ts)
+
+### ... need to be done
+* Type checking for API response e.g. by type guards / predicates
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
