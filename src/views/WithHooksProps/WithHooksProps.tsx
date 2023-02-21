@@ -11,15 +11,13 @@ export const WithHooksProps = (): JSX.Element => {
         NameResponse,
         NameError
     >({
-        genericResponseTypeGuard: (response: NameResponse | unknown): response is NameResponse => {
-            return (response as NameResponse).age !== undefined;
-        },
+        genericResponseTypeGuard: (response: NameResponse | unknown): response is NameResponse =>
+            (response as NameResponse).age !== undefined,
         genericTypeError: {
-            error: "Incorrect response type",
+            error: "Incorrect response type"
         },
-        genericErrorTypeGuard: (response: NameError | unknown | undefined): response is NameError => {
-            return (response as NameError).error !== undefined;
-        }
+        genericErrorTypeGuard: (response: NameError | unknown | undefined): response is NameError =>
+            (response as NameError).error !== undefined
     });
 
     return (

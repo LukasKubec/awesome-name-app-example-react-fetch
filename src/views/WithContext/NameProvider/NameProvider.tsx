@@ -14,12 +14,9 @@ export const NameProvider = ({ children }: NameProviderProps): JSX.Element => {
         {
             genericResponseTypeGuard: (
                 response: NameResponse | unknown
-            ): response is NameResponse => {
-                return (response as NameResponse).age !== undefined;
-            },
-            genericErrorTypeGuard: (error: NameError | unknown | undefined): error is NameError => {
-                return (error as NameError).error !== undefined;
-            }
+            ): response is NameResponse => (response as NameResponse).age !== undefined,
+            genericErrorTypeGuard: (error: NameError | unknown | undefined): error is NameError =>
+                (error as NameError).error !== undefined
         }
     );
 
