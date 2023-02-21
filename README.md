@@ -28,7 +28,7 @@ Example of fetching data from API and displaying it in React app with Axios and 
 
 Check out:
 * Components in view with hook calls:
-    * [src/views/WithHookProps/WithHooksProps.tsx](src/views/WithHookProps/WithHooksProps.tsx)
+    * [src/views/WithHooksProps/WithHooksProps.tsx](src/views/WithHooksProps/WithHooksProps.tsx)
 * Custom hook with api call:
     * [src/lib/WithHooks/useFetchNameData/useFetchNameData.ts](src/lib/WithHooks/useFetchNameData/useFetchNameData.ts)
 
