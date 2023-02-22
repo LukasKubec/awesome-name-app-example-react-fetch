@@ -5,7 +5,7 @@ Simple example how to handle fetching data from API and display it in React app 
 * typesafe with Typescript with type check both on response and response error
 * with setting types only at fetch call with inheriting types to all components that use those data
 
-This app lives on [Railway](https://agecount-production.up.railway.app/) and is using [Agify API](https://agify.io/) to fetch data.  
+This app lives on [Vercel](https://awesome-name-app-example-react-fetch.vercel.app/) and is using [Agify API](https://agify.io/) to fetch data.  
 
 ## How to run this app
 1. Clone this repo
