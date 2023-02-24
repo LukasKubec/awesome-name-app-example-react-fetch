@@ -70,6 +70,7 @@ export const useFetchData = <RS, E>({
                             });
                         } else {
                             console.error("Response type is incorrect");
+                            setResponse(INITIAL_STATE)
                         }
                     }
                 } catch (error) {
@@ -84,6 +85,7 @@ export const useFetchData = <RS, E>({
                         } else {
                             console.error("Unknown error");
                             console.error(error.response?.data);
+                            setResponse(INITIAL_STATE)
                         }
                     }
                 }
